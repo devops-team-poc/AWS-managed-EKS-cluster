@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejspod
+  template:
+    metadata:
+      labels:
+        app: nodejspod
+    spec:
+      volumes:
+      - name: pvfromebs
+        persistentVolumeClaim:
+          claimName: mypvc
+      containers:
+      - name: nodejscontainer
+        image: mannansiddiqui/nodejs-app:v1
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /var
+          name: pvfromebs
